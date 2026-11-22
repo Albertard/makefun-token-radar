@@ -1,0 +1,109 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Token Launch Radar — pre-token protocols ranked by implied value</title>
+<link rel="stylesheet" href="app.css">
+</head>
+<body>
+<header class="top">
+  <div class="brand">
+    <h1>TOKEN LAUNCH RADAR</h1>
+    <p class="sub">Pre-token protocols, ranked by what their launch would be worth — from the sealed DefiLlama snapshot.</p>
+  </div>
+  <dl class="stats" id="stats"></dl>
+</header>
+
+<main>
+  <section class="panel method">
+    <details open>
+      <summary>How this radar works — the model, in the open</summary>
+      <div class="method-body">
+        <p><strong>Implied value = category multiple × TVL<sup>0.85</sup> × growth × maturity.</strong>
+        The <strong>category multiple</strong> is the median market-cap&nbsp;/&nbsp;TVL of the live-token
+        protocols in the same category (small samples are shrunk toward the global median) — so a
+        lending protocol is priced like lending protocols trade, not like a bridge. TVL enters
+        sublinearly (exponent 0.85): size matters, but a $2.7B protocol is not 100× a $27M one.
+        <strong>Growth</strong> is the 7-day TVL change, clamped to −50%…+100% and weighted 0.6.
+        <strong>Maturity</strong> rises with how long a protocol has run with no token
+        (0.70 at launch, saturating near 1.00 after ~3 years; 0.85 when the listing date is unknown).
+        No protocol name is ever special-cased — the same function scores every row.</p>
+        <p class="note">Implied value is this entry's own claim about what a token would be worth
+        <em>if the protocol's record stayed as it is</em>. It does not predict whether or when a
+        token is issued. A protocol is called “pre-token” when its DefiLlama record carries no
+        token — the record is not proof it has none. Snapshot as of <span id="asof"></span>.</p>
+        <table class="comps" id="comps">
+          <caption>Comparables — median market-cap / TVL of live-token protocols, by category</caption>
+          <thead><tr><th>Category</th><th>Live comps</th><th>Median multiple</th><th>Multiple used</th></tr></thead>
+          <tbody></tbody>
+        </table>
+      </div>
+    </details>
+  </section>
+
+  <section class="panel controls" aria-label="Board controls">
+    <label>Search <input id="q" type="search" placeholder="name or slug…" autocomplete="off"></label>
+    <label>Category <select id="cat"><option value="">All categories</option></select></label>
+    <label>Chain <select id="chain"><option value="">All chains</option></select></label>
+    <label class="check"><input id="watch" type="checkbox"> Watchlist only</label>
+    <span class="count" id="count"></span>
+  </section>
+
+  <section class="panel">
+    <table class="board" id="board">
+      <thead>
+        <tr>
+          <th data-sort="rank" class="num sorted">#</th>
+          <th data-sort="name">Protocol</th>
+          <th data-sort="category">Category</th>
+          <th data-sort="chains">Chains</th>
+          <th data-sort="tvl_usd" class="num">TVL</th>
+          <th data-sort="change_7d" class="num">7d</th>
+          <th data-sort="age_days" class="num">Age</th>
+          <th data-sort="category_multiple" class="num">Multiple</th>
+          <th data-sort="implied_value_usd" class="num">Implied value</th>
+        </tr>
+      </thead>
+      <tbody></tbody>
+    </table>
+    <p class="hint">Click a row for its detail view and farm plan. Click a column header to sort.</p>
+  </section>
+
+  <section class="panel detail" id="detail" hidden>
+    <div class="detail-head">
+      <h2 id="d-name"></h2>
+      <button id="d-close" type="button">Close ×</button>
+    </div>
+    <dl class="facts" id="d-facts"></dl>
+    <h3>Why this value — the model, step by step</h3>
+    <table class="breakdown" id="d-model">
+      <thead><tr><th>Step</th><th>Figure</th><th>Value</th></tr></thead>
+      <tbody></tbody>
+    </table>
+    <h3>Farm plan — concrete steps, with cost and time</h3>
+    <ol class="farm" id="d-farm"></ol>
+    <p class="note">Farm with money you can afford to lose. Never pay anyone to claim an
+    airdrop, and claim only from links the protocol itself publishes.</p>
+  </section>
+
+  <section class="panel">
+    <h2>Live tokens — the market's own values, kept apart</h2>
+    <p class="note">These protocols already trade. They are the comparables the multiples come
+    from — they are never ranked on this board, so a live token can never outrank a launch
+    that has not happened yet.</p>
+    <table class="board live" id="live">
+      <thead><tr><th>Protocol</th><th>Category</th><th>Chains</th><th class="num">TVL</th><th class="num">Market cap</th><th class="num">7d</th></tr></thead>
+      <tbody></tbody>
+    </table>
+  </section>
+</main>
+
+<footer>
+  <p>Token Launch Radar · model <span id="mver"></span> · snapshot <span id="src"></span> ·
+  built from the sealed snapshot alone — no network, no live prices.</p>
+</footer>
+<script src="../data.js"></script>
+<script src="app.js"></script>
+</body>
+</html>
